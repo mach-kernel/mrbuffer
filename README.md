@@ -28,6 +28,8 @@ There are a lot of good materials out there: here is what I used to make this ga
 
 - [IIgs Hardware Architecture](http://www.goldstarsoftware.com/applesite/Documentation/AppleIIgsHardwareReferenceManual.PDF)
   - p. 74 has a memory map
+- [IIgs firmware reference](http://www.applelogic.org/files/GSFIRMWAREREF1.pdf)
+  - Importantly, overview on bank $00, D $0000
 - [Scanlon's IIgs Assembly Programming](ftp://ftp.apple.asimov.net/pub/apple_II/documentation/programming/65816_gs/Apple%20IIGS%20Assembly%20Language%20Programming.pdf)
   - Tremendously useful reference for QuickDraw and some tools
 - [Programming the 65816 and 65xx family](https://apple2.gs/downloads/Programmanual.pdf)
@@ -44,3 +46,4 @@ There are a lot of good materials out there: here is what I used to make this ga
 - [SNES CPU overview, same CPU, nice insights](https://github.com/michielvoo/SNES/wiki/CPU)
 - [SNES opcode list](http://wiki.metroidconstruction.com/doku.php?id=super:technical_information:asm_mnemonics)
 - [65816 primer](http://softpixel.com/~cwright/sianse/docs/65816NFO.HTM)
+- [Another 6502 reference, insightful](https://github.com/wiz-lang/wiz/wiki/Registers-and-Memory-(6502))
