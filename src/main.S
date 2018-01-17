@@ -1,37 +1,142 @@
-            REL
-            TYP   $B3
-            DSK   main.l
+            rel
+            typ   $B3
+            dsk   main.l
 
-            MX    %00         ; enable 16-bit mode
+            mx    %00
+            phk
+            plb
+
+            mx    %11
+            sta   $E0
+            pha
+            pha
+            plb
+            pld
+            sta   $C000
+            sta   $C054
+
+            mx    %00
+
+; load a char and write it to the 40 char text buffer
+bois        lda   "B"
+            sta   $E00400
+            sta   $E00401
+            sta   $E00402
+            jmp   bois
 
 ; Important locations
+SPEAKER     equ   $E0C030
+PRODOS16    equ   $E100A8
 
-SPEAKER     EQU   $E0C030
-PRODOS16    EQU   $E100A8
-
-            PHK
-            PLB
-
-* Beep code freezes
-*beep        LDA   SPEAKER
-*            LDY   #1000
-*            LDX   #1000
-*loop        DEX
-*            BNE   loop
-*            DEY
-*            BNE   beep
-
-            JSL   PRODOS16
+            jsl   PRODOS16
                               ; This exit code is "device busy", why is it the only one
                               ; that works?!
-            DA    $29
-            ADRL  QP
+            da    $29
+            adrl  QP
             bcs   ERROR
 
-ERROR       BRK
+ERROR       brk
 
 QP          adrl  $0000
-            DA    $00
+            da    $00
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
