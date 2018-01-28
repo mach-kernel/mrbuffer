@@ -47,3 +47,4 @@ There are a lot of good materials out there: here is what I used to make this ga
 - [SNES opcode list](http://wiki.metroidconstruction.com/doku.php?id=super:technical_information:asm_mnemonics)
 - [65816 primer](http://softpixel.com/~cwright/sianse/docs/65816NFO.HTM)
 - [Another 6502 reference, insightful](https://github.com/wiz-lang/wiz/wiki/Registers-and-Memory-(6502))
+- [65816 interrupts guide](http://6502.org/tutorials/65c816interrupts.html)

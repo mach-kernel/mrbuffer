@@ -23,28 +23,25 @@
             stal  $00C051     ; select text mode only. "only"?
             ldal  $00C054     ; select text page 1 (there are 2)
             ldal  $00C056     ; select "low res" graphics
+            rep   #$30        ; go back to 16-bit mode
 
-; ok, we are done toggling switches, let's go make a string
-            rep   #$20
+            ldx   #hithere+2 ; strl, first two bytes are strlen, # denotes immediate addr val
+            ldy   #$0400     ; start of text buffer on 00
+            ldal  hithere
+            dec
 
-            ldx   #2
-:loopy      nop
-            lda   hithere,x
-            stal  $000400,x
-            cpx   hithere
-            inx
-            bcs   outbrk
-            jmp   :loopy
-
-outbrk      brk
+            mvn   $02,        $00
+            brk
 
 ; Important locations
 SPEAKER     equ   $E0C030
 PRODOS16    equ   $E100A8
 
             jsl   PRODOS16
-                              ; This exit code is "device busy", why is it the only one
-                              ; that works?!
+
+; This exit code is "device busy", why is it the only one
+; that works?!
+
             da    $29
             adrl  QP
             bcs   ERROR
@@ -55,6 +52,36 @@ QP          adrl  $0000
             da    $00
 
 hithere     strl  "this was excruciating"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
