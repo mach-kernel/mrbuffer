@@ -2,7 +2,7 @@
             typ   $B3
             dsk   main.l
 
-                              ; ensure 16-bit mode (unnecessary?)
+; ensure 16-bit mode (unnecessary?)
             clc
             xce
             rep   #$20
@@ -11,7 +11,6 @@
             plb
 
 ; half bank for accumulator, you don't want to toggle them on then back off, right?
-
             sep   #$30
 
 ; toggle the softswitches; they don't take any values. some are only triggered
@@ -25,13 +24,21 @@
             ldal  $00C056     ; select "low res" graphics
             rep   #$30        ; go back to 16-bit mode
 
-            ldx   #hithere+2 ; strl, first two bytes are strlen, # denotes immediate addr val
-            ldy   #$0400     ; start of text buffer on 00
-            ldal  hithere
-            dec
+; show the current char on screen
+; first check and discard to clear strobe, then enter loop
+            ldal  $00C010
+:eloop      ldal  $00C010
+            stal  $000400
+            jmp   :eloop
 
-            mvn   $02,        $00
-            brk
+; working text blit
+*            ldx   #hithere+2 ; strl, first two bytes are strlen, # denotes immediate addr val
+*            ldy   #$0400     ; start of text buffer on 00
+*            ldal  hithere
+*            dec
+
+*            mvn   $02,        $00
+*            brk
 
 ; Important locations
 SPEAKER     equ   $E0C030
@@ -52,375 +59,6 @@ QP          adrl  $0000
             da    $00
 
 hithere     strl  "this was excruciating"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
