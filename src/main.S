@@ -22,14 +22,32 @@
             stal  $00C051     ; select text mode only. "only"?
             ldal  $00C054     ; select text page 1 (there are 2)
             ldal  $00C056     ; select "low res" graphics
-            rep   #$30        ; go back to 16-bit mode
+
+            rep   #$30
 
 ; show the current char on screen
 ; first check and discard to clear strobe, then enter loop
-            ldal  $00C010
-:eloop      ldal  $00C010
-            stal  $000400
-            jmp   :eloop
+
+            ldx   #0
+eloop       stal  $000400,X
+            ldal  $00C000
+            clc
+            cmp   $8888
+*            bcs   down
+            clc
+            cmp   $9595
+            bcs   up
+            jmp   eloop
+
+down        dex
+            dex
+            jmp   eloop
+up          clc
+            cpx   #50
+            bcs   eloop
+            inx
+            inx
+            jmp   eloop
 
 ; working text blit
 *            ldx   #hithere+2 ; strl, first two bytes are strlen, # denotes immediate addr val
