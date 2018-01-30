@@ -23,31 +23,32 @@
             ldal  $00C054     ; select text page 1 (there are 2)
             ldal  $00C056     ; select "low res" graphics
 
-            rep   #$30
+*            rep   #$30
 
 ; show the current char on screen
 ; first check and discard to clear strobe, then enter loop
 
             ldx   #0
 eloop       stal  $000400,X
-            ldal  $00C000
             clc
-            cmp   $8888
-*            bcs   down
+            ldal  $00C010
+            bit   %1
+            bne   hndlkey
+            jmp   eloop
+
+hndlkey     cmp   #$1088
+            beq   down
             clc
-            cmp   $9595
-            bcs   up
+            cmp   #$1095
+            beq   up
+            jmp   eloop
+
+up          inx
             jmp   eloop
 
 down        dex
-            dex
             jmp   eloop
-up          clc
-            cpx   #50
-            bcs   eloop
-            inx
-            inx
-            jmp   eloop
+
 
 ; working text blit
 *            ldx   #hithere+2 ; strl, first two bytes are strlen, # denotes immediate addr val
@@ -61,6 +62,7 @@ up          clc
 ; Important locations
 SPEAKER     equ   $E0C030
 PRODOS16    equ   $E100A8
+
 
             jsl   PRODOS16
 
@@ -77,6 +79,48 @@ QP          adrl  $0000
             da    $00
 
 hithere     strl  "this was excruciating"
+brkboi      brk
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
