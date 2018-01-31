@@ -28,26 +28,34 @@
 ; show the current char on screen
 ; first check and discard to clear strobe, then enter loop
 
+
+
+
             ldx   #0
-eloop       stal  $000400,X
-            clc
+eloop       stal  $000480,X
             ldal  $00C010
+            clc
             bit   %1
-            bne   hndlkey
+            jsr   handlekey
             jmp   eloop
 
-hndlkey     cmp   #$1088
+handlekey   cmp   #$1088
             beq   down
-            clc
             cmp   #$1095
             beq   up
-            jmp   eloop
+outkey      rts
 
-up          inx
-            jmp   eloop
+up          clc
+            cpx   #39
+            bcs   outkey
+            inx
+            jmp   outkey
 
-down        dex
-            jmp   eloop
+down        clc
+            cpx   #0
+            bcs   outkey
+            dex
+            jmp   outkey
 
 
 ; working text blit
