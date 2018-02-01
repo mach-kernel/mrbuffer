@@ -26,37 +26,33 @@
 *            rep   #$30
 
 ; show the current char on screen
-; first check and discard to clear strobe, then enter loop
-
-
-
-
+; read keyboard then hit strobe to reset
             ldx   #0
-eloop       stal  $000480,X
-            ldal  $00C010
+eloop       ldal  $00C000
+skip        stal  $000400,X
             clc
             bit   %1
             jsr   handlekey
+            ldal  $00C010
             jmp   eloop
 
 handlekey   cmp   #$1088
-            beq   down
+            beq   left
             cmp   #$1095
-            beq   up
+            beq   right
 outkey      rts
 
-up          clc
-            cpx   #39
-            bcs   outkey
-            inx
-            jmp   outkey
-
-down        clc
+left        clc
             cpx   #0
-            bcs   outkey
+            beq   outkey
             dex
-            jmp   outkey
+            rts
 
+right       clc
+            cpx   #39
+            beq   outkey
+            inx
+            rts
 
 ; working text blit
 *            ldx   #hithere+2 ; strl, first two bytes are strlen, # denotes immediate addr val
@@ -88,6 +84,51 @@ QP          adrl  $0000
 
 hithere     strl  "this was excruciating"
 brkboi      brk
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
