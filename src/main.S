@@ -27,31 +27,22 @@
 
 ; show the current char on screen
 ; read keyboard then hit strobe to reset
+
             ldx   #0
-eloop       ldal  $00C000
-skip        stal  $000400,X
-            clc
-            bit   %1
-            jsr   handlekey
             ldal  $00C010
-            jmp   eloop
 
-handlekey   cmp   #$1088
-            beq   left
-            cmp   #$1095
-            beq   right
-outkey      rts
+inloop      clc
+            ldal  $00C000
+            bit   #%1
+            bmi   keybranch
+            jmp   inloop
 
-left        clc
-            cpx   #0
-            beq   outkey
-            dex
-            rts
+keybranch   jsr   keydown
+            jmp   inloop
 
-right       clc
-            cpx   #39
-            beq   outkey
-            inx
+keydown     nop
+            stal  $000400,X
+            ldal  $00C010
             rts
 
 ; working text blit
@@ -84,6 +75,45 @@ QP          adrl  $0000
 
 hithere     strl  "this was excruciating"
 brkboi      brk
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
