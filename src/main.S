@@ -5,7 +5,7 @@
 ; ensure 16-bit mode (unnecessary?)
             clc
             xce
-            rep   #$20
+            rep   #$30
 
             phk
             plb
@@ -23,7 +23,8 @@
             ldal  $00C054     ; select text page 1 (there are 2)
             ldal  $00C056     ; select "low res" graphics
 
-*            rep   #$30
+            rep   #$30
+            sep   #$20
 
 ; show the current char on screen
 ; read keyboard then hit strobe to reset
@@ -49,16 +50,27 @@ keydown     nop
             beq   right
             jmp   dispchar
 
-up          nop
+up          clc
+            cpx   #1488
+            beq   rtsout
+            rep   #$30
+            pha
+            txa
+            sbc   #128
+            tax
+            pla
+            sep   #$20
             jmp   rtsout
 down        clc
             cpx   #1488
             beq   rtsout
+            rep   #$30
             pha
             txa
             adc   #128
             tax
             pla
+            sep   #$20
             jmp   rtsout
 
 left        clc
@@ -111,6 +123,21 @@ QP          adrl  $0000
 
 hithere     strl  "this was excruciating"
 brkboi      brk
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
