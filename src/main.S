@@ -27,9 +27,6 @@
 
 ; show the current char on screen
 ; read keyboard then hit strobe to reset
-
-*row         da    $0400
-
             ldx   #0
             ldal  $00C010
 
@@ -114,6 +111,18 @@ QP          adrl  $0000
 
 hithere     strl  "this was excruciating"
 brkboi      brk
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
