@@ -1,5 +1,5 @@
-# pon-gs
-Apple IIgs simple pong game, with animation and sound. Written in 100% 658c16 assembly.
+# mrbuffer
+Apple IIgs simple lowres buffer text editor. Written in 65816 assembly. The commit history will show a different name; I had originally intended to write a pong game but found editing text a more suitable vehicle for learning the quirks of writing code for the GS. 
 
 ## Getting Started
 

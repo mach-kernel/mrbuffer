@@ -28,6 +28,8 @@
 ; show the current char on screen
 ; read keyboard then hit strobe to reset
 
+*row         da    $0400
+
             ldx   #0
             ldal  $00C010
 
@@ -52,7 +54,14 @@ keydown     nop
 
 up          nop
             jmp   rtsout
-down        nop
+down        clc
+            cpx   #1488
+            beq   rtsout
+            pha
+            txa
+            adc   #128
+            tax
+            pla
             jmp   rtsout
 
 left        clc
@@ -68,6 +77,7 @@ right       clc
             jmp   rtsout
 
 dispchar    stal  $000400,X
+            inx
             jmp   rtsout
 
 rtsout      ldal  $00C010
@@ -104,6 +114,25 @@ QP          adrl  $0000
 
 hithere     strl  "this was excruciating"
 brkboi      brk
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
