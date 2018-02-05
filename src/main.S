@@ -36,13 +36,42 @@ inloop      clc
             bit   #%1
             bmi   keybranch
             jmp   inloop
-
 keybranch   jsr   keydown
             jmp   inloop
 
 keydown     nop
-            stal  $000400,X
-            ldal  $00C010
+            cmp   #$8B        ; up
+            beq   up
+            cmp   #$8A        ; down
+            beq   down
+            cmp   #$88        ; left
+            beq   left
+            cmp   #$95        ; right
+            beq   right
+            jmp   dispchar
+
+up          nop
+            jmp   rtsout
+down        nop
+            jmp   rtsout
+
+left        clc
+            cpx   #0
+            beq   rtsout
+            dex
+            jmp   rtsout
+
+right       clc
+            cpx   #39
+            beq   rtsout
+            inx
+            jmp   rtsout
+
+dispchar    stal  $000400,X
+            jmp   rtsout
+
+rtsout      ldal  $00C010
+            lda   #0
             rts
 
 ; working text blit
@@ -75,6 +104,21 @@ QP          adrl  $0000
 
 hithere     strl  "this was excruciating"
 brkboi      brk
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
