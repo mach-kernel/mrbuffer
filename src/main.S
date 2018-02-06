@@ -51,24 +51,32 @@ keydown     nop
             jmp   dispchar
 
 up          clc
-            cpx   #1488
-            beq   rtsout
-            rep   #$30
-            pha
-            txa
-            sbc   #128
-            tax
-            pla
-            sep   #$20
+            phy
+            ldy   #0
+            jsr   updown
+            ply
             jmp   rtsout
+
 down        clc
+            phy
+            ldy   #1
+            jsr   updown
+            ply
+            jmp   rtsout
+
+updown      clc
             cpx   #1488
             beq   rtsout
             rep   #$30
             pha
             txa
-            adc   #128
-            tax
+            cpy   #0
+            beq   linedown
+            bne   lineup
+lineup      adc   #128
+            jmp   linecont
+linedown    sbc   #128
+linecont    tax
             pla
             sep   #$20
             jmp   rtsout
@@ -123,192 +131,5 @@ QP          adrl  $0000
 
 hithere     strl  "this was excruciating"
 brkboi      brk
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
