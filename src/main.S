@@ -31,13 +31,13 @@
             ldx   #0
             ldal  $00C010
 
-inloop      clc
+:kloop      clc
             ldal  $00C000
             bit   #%1
-            bmi   keybranch
-            jmp   inloop
-keybranch   jsr   keydown
-            jmp   inloop
+            bmi   :kjump
+            jmp   :kloop
+:kjump      jsr   keydown
+            jmp   :kloop
 
 keydown     nop
             cmp   #$8B        ; up
@@ -48,7 +48,20 @@ keydown     nop
             beq   left
             cmp   #$95        ; right
             beq   right
+            cmp   #$FF        ; backspace
+            beq   backspace
+            cmp   #$8D        ; return
+            beq   down
             jmp   dispchar
+
+backspace   clc
+            cpx   #0
+            bne   :drop
+            jmp   :out
+:drop       dex
+:out        lda   #$A0
+            stal  $000400,X
+            jmp   rtsout
 
 up          clc
             phy
@@ -71,12 +84,12 @@ updown      clc
             pha
             txa
             cpy   #0
-            beq   linedown
-            bne   lineup
-lineup      adc   #128
-            jmp   linecont
-linedown    sbc   #128
-linecont    tax
+            beq   :ldown
+            bne   :lup
+:lup        adc   #128
+            jmp   :lcont
+:ldown      sbc   #128
+:lcont      tax
             pla
             sep   #$20
             jmp   rtsout
@@ -131,5 +144,24 @@ QP          adrl  $0000
 
 hithere     strl  "this was excruciating"
 brkboi      brk
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
