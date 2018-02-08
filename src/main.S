@@ -50,13 +50,13 @@ keydown     cmp   #$8B        ; up
             cmp   #$88        ; left
             beq   left
             cmp   #$95        ; right
-            beq   right
+            beq   colinc
             cmp   #$FF        ; backspace
             beq   backspace
             cmp   #$8D        ; return
             beq   down
-            inx
             jsr   drawchar
+            jmp   colinc
 finkey      ldal  $00C010     ; clear strobe bit
             lda   #0
             rts
@@ -73,10 +73,13 @@ left        cpx   #0
             beq   finkey
             dex
             jmp   finkey
-right       cpx   #39
-            beq   finkey
+colinc      cpx   #39
+            beq   :rolcol
             inx
             jmp   finkey
+:rolcol     ldx   #0
+            jmp   down
+
 backspace   lda   #$A0
             jsr   drawchar
             jmp   left
@@ -154,6 +157,9 @@ hithere     strl  "this was excruciating"
 brkboi      brk
 
 bufbase     da    #40
+
+
+
 
 
 
