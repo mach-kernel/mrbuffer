@@ -1,35 +1,40 @@
 # mrbuffer
-Apple IIgs simple lowres buffer text editor. Written in 65816 assembly. The commit history will show a different name; I had originally intended to write a pong game but found editing text a more suitable vehicle for learning the quirks of writing code for the GS. 
+A small text editor for the 40 character buffer of the Apple IIgs I used to learn 65816 assembly.  
+
+![mrbuffer](https://i.imgur.com/NafMhGf.gifv)
 
 ## Getting Started
 
 ### Requirements
 
-- Some *nix flavor. Please don't open issues if you are using Windows.
-- GNU build tools (`autoconf`, `gcc`, etc.)
-- Basic understanding of C/C++ build issues, since you'll likely face some.
-- An Apple IIGS emulator of your flavor + the appropriate ROM (which you will have to source for yourself)
+I used [BrutalDeluxe's Cross-Dev Tools](http://brutaldeluxe.fr/products/crossdevtools/index.html): CADIUS for disk imaging and the Merlin32 assembler. We'll be building them from source since they are not large. 
+
+- A *nix flavor would be helpful!
+- GNU build tools
+- Some patience (my scripts might not build everything right on your system)
+- An Apple IIGS emulator of your preference + the appropriate ROM ([which you'll have to find](https://www.google.com/search?q=apple+iigs+rom+download))
   - The assemble script uses `gsplus`
+
+**OS X Users:** Merlin has an issue with `a65816_Line.c:L2412` that I crudely patch with `sed`, so if you have issues look there first. Works for me on Sierra with the XCode build tools.
 
 ### Building
 
 There are two scripts here which will get all the tools needed to assemble the game. 
 
 ```bash
-./build_env.sh # to grab utils
-./assemble.sh  # to assemble the game
+./build_env.sh # Downloads and builds Cadius and Merlin
+./assemble.sh  # Assemble and launch
 ```
 
-The `assemble` script runs the assembly source through Merlin32, then changes the ProDOS file kind to `S16`, an executable format that is used for GS/OS applications. `_FileInformation.txt` is what `cadius` uses to manage the ProDOS metadata for each record (since obviously this information can't be mapped to your computer's filesystem).
+The `assemble` script runs the source through Merlin32, then changes the ProDOS file kind to `S16`, an executable format that is used for GS/OS applications. `_FileInformation.txt` is what `cadius` uses to manage the ProDOS metadata for each record (since obviously this information can't be mapped to your computer's filesystem).
 
 ## References
 
-There are a lot of good materials out there: here is what I used to make this game.
+There are a lot of good materials out there: here is what I used to make this. Additionally, thank you to the Apple IIGS Enthusiasts Facebook group and `#a2chat` over at `irc.a2central.com` for answering my questions.
 
 - [IIgs Hardware Architecture](http://www.goldstarsoftware.com/applesite/Documentation/AppleIIgsHardwareReferenceManual.PDF)
   - p. 74 has a memory map
 - [IIgs firmware reference](http://www.applelogic.org/files/GSFIRMWAREREF1.pdf)
-  - Importantly, overview on bank $00, D $0000
 - [Scanlon's IIgs Assembly Programming](ftp://ftp.apple.asimov.net/pub/apple_II/documentation/programming/65816_gs/Apple%20IIGS%20Assembly%20Language%20Programming.pdf)
   - Tremendously useful reference for QuickDraw and some tools
 - [Programming the 65816 and 65xx family](https://apple2.gs/downloads/Programmanual.pdf)
@@ -42,7 +47,6 @@ There are a lot of good materials out there: here is what I used to make this ga
 - [Apple II 6502 for beginners](http://www.appleoldies.ca/anix/Using-6502-Assembly-Language-by-Randy-Hyde.pdf)
   - Has practical examples for reading user input, etc.
 - [System monitor reference](http://apple2.info/wiki/index.php?title=System_Monitor)
-  - This is the humbling moment I take back every bad thing I ever said about GDB in my life ever. 
 - [SNES CPU overview, same CPU, nice insights](https://github.com/michielvoo/SNES/wiki/CPU)
 - [SNES opcode list](http://wiki.metroidconstruction.com/doku.php?id=super:technical_information:asm_mnemonics)
 - [65816 primer](http://softpixel.com/~cwright/sianse/docs/65816NFO.HTM)
