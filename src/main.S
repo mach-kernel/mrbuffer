@@ -29,18 +29,21 @@
 ; show the current char on screen
 ; read keyboard then hit strobe to reset
             ldx   #0
+            ldy   #0
             ldal  $00C010
+
+; core key event loop
 
 :kloop      clc
             ldal  $00C000
-            bit   #%1
+            bit   #%1         ; check strobe bit to make sure a key was pressed
             bmi   :kjump
             jmp   :kloop
 :kjump      jsr   keydown
+            jsr   drawpos
             jmp   :kloop
 
-keydown     nop
-            cmp   #$8B        ; up
+keydown     cmp   #$8B        ; up
             beq   up
             cmp   #$8A        ; down
             beq   down
@@ -52,67 +55,73 @@ keydown     nop
             beq   backspace
             cmp   #$8D        ; return
             beq   down
-            jmp   dispchar
-
-backspace   clc
-            cpx   #0
-            bne   :drop
-            jmp   :out
-:drop       dex
-:out        lda   #$A0
-            stal  $000400,X
-            jmp   rtsout
-
-up          clc
-            phy
-            ldy   #0
-            jsr   updown
-            ply
-            jmp   rtsout
-
-down        clc
-            phy
-            ldy   #1
-            jsr   updown
-            ply
-            jmp   rtsout
-
-updown      clc
-            cpx   #1488
-            beq   rtsout
-            rep   #$30
-            pha
-            txa
-            cpy   #0
-            beq   :ldown
-            bne   :lup
-:lup        adc   #128
-            jmp   :lcont
-:ldown      sbc   #128
-:lcont      tax
-            pla
-            sep   #$20
-            jmp   rtsout
-
-left        clc
-            cpx   #0
-            beq   rtsout
-            dex
-            jmp   rtsout
-
-right       clc
-            cpx   #39
-            beq   rtsout
             inx
-            jmp   rtsout
-
-dispchar    stal  $000400,X
-            inx
-            jmp   rtsout
-
-rtsout      ldal  $00C010
+            jsr   drawchar
+finkey      ldal  $00C010     ; clear strobe bit
             lda   #0
             rts
+
+up          cpy   #0
+            beq   finkey
+            dey
+            jmp   finkey
+down        cpy   #22
+            beq   finkey
+            iny
+            jmp   finkey
+left        cpx   #0
+            beq   finkey
+            dex
+            jmp   finkey
+right       cpx   #39
+            beq   finkey
+            inx
+            jmp   finkey
+backspace   lda   #$A0
+            jsr   drawchar
+            jmp   left
+
+; $B0 is the start of the char table for numbers
+; we start by preserving our registers
+drawpos     pha
+            phx
+                              ; draw the parens and comma
+            lda   #"("
+            stal  $0007F1
+            lda   #$AC
+            stal  $0007F4
+            lda   #")"
+            stal  $0007F7
+            txa
+            jsr   tencount
+            adc   #$B0
+            stal  $0007F3
+            txa
+            adc   #$B0
+            stal  $0007F2
+            tya
+            jsr   tencount
+            adc   #$B0
+            stal  $0007F6
+            txa
+            adc   #$B0
+            stal  $0007F5
+                              ; restore x and original keydown char
+            plx
+            pla
+            rts
+
+drawchar    stal  $000400,X   ; display the character
+            rts
+
+tencount    ldx   #0
+:substart   clc
+            cmp   #10
+            bcc   :subout
+            sbc   #10
+            inx
+            jmp   :substart
+:subout     rts
 
 ; working text blit
 *            ldx   #hithere+2 ; strl, first two bytes are strlen, # denotes immediate addr val
@@ -126,7 +135,6 @@ rtsout      ldal  $00C010
 ; Important locations
 SPEAKER     equ   $E0C030
 PRODOS16    equ   $E100A8
-
 
             jsl   PRODOS16
 
@@ -144,6 +152,80 @@ QP          adrl  $0000
 
 hithere     strl  "this was excruciating"
 brkboi      brk
+
+bufbase     da    #40
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
