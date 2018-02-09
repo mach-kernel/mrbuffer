@@ -2,6 +2,9 @@
             typ   $B3
             dsk   main.l
 
+SPEAKER     equ   $00C030
+PRODOS16    equ   $E100A8
+
 ; ensure 16-bit mode (unnecessary?)
             clc
             xce
@@ -50,7 +53,7 @@ keydown     cmp   #$8B        ; up
             cmp   #$88        ; left
             beq   left
             cmp   #$95        ; right
-            beq   colinc
+            beq   right
             cmp   #$FF        ; backspace
             beq   backspace
             cmp   #$8D        ; return
@@ -62,17 +65,20 @@ finkey      ldal  $00C010     ; clear strobe bit
             rts
 
 up          cpy   #0
-            beq   finkey
+            beq   ping
             dey
             jmp   finkey
 down        cpy   #22
-            beq   finkey
+            beq   ping
             iny
             jmp   finkey
 left        cpx   #0
-            beq   finkey
+            beq   ping
             dex
             jmp   finkey
+right       cpx   #39
+            beq   ping
+            jmp   *+2
 colinc      cpx   #39
             beq   :rolcol
             inx
@@ -82,11 +88,18 @@ colinc      cpx   #39
 return      ldx   #0
             jmp   down
 backspace   lda   #$A0
-            jsr   drawchar
-            jmp   left
+            cpx   #0
+            beq   :contbs
+            dex
+:contbs     jsr   drawchar
+            jmp   finkey
 
-; $B0 is the start of the char table for numbers
-; we start by preserving our registers
+
+ping        pha
+            ldal  SPEAKER
+            pla
+            jmp   finkey
+
 drawpos     pha
             phx
                               ; draw the parens and comma
@@ -218,126 +231,7 @@ tencount    ldx   #0
             jmp   :substart
 :subout     rts
 
-; working text blit
-*            ldx   #hithere+2 ; strl, first two bytes are strlen, # denotes immediate addr val
-*            ldy   #$0400     ; start of text buffer on 00
-*            ldal  hithere
-*            dec
-
-*            mvn   $02,        $00
-*            brk
-
-; Important locations
-SPEAKER     equ   $E0C030
-PRODOS16    equ   $E100A8
-
             jsl   PRODOS16
-
-; This exit code is "device busy", why is it the only one
-; that works?!
-
-            da    $29
-            adrl  QP
-            bcs   ERROR
-
-ERROR       brk
-
-QP          adrl  $0000
-            da    $00
-
-hithere     strl  "this was excruciating"
-brkboi      brk
-
-bufbase     da    #40
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

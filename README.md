@@ -28,6 +28,8 @@ There are two scripts here which will get all the tools needed to assemble the g
 
 The `assemble` script runs the source through Merlin32, then changes the ProDOS file kind to `S16`, an executable format that is used for GS/OS applications. `_FileInformation.txt` is what `cadius` uses to manage the ProDOS metadata for each record (since obviously this information can't be mapped to your computer's filesystem).
 
+I also extracted the Merlin16 macros from the original images. I'm not using them yet but I imagine I will need to in order to implement quitting, etc. 
+
 ## References
 
 There are a lot of good materials out there: here is what I used to make this. Additionally, thank you to the Apple IIGS Enthusiasts Facebook group and `#a2chat` over at `irc.a2central.com` for answering my questions.
