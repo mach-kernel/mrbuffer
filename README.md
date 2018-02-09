@@ -1,7 +1,7 @@
 # mrbuffer
 A small text editor for the 40 character buffer of the Apple IIgs I used to learn 65816 assembly.  
 
-![mrbuffer](https://i.imgur.com/NafMhGf.gifv)
+![mrbuffer](https://i.imgur.com/82d4caa.gif)
 
 ## Getting Started
 
