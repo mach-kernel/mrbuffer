@@ -1,5 +1,5 @@
 # mrbuffer
-A small text editor for the 40 character buffer of the Apple IIgs I used to learn 65816 assembly.  
+A small text editor for the 40 character buffer of the Apple IIgs I used to learn 65816 assembly. Here's [technical walkthrough](https://hackernoon.com/building-mrbuffer-a-text-editor-for-a-31-year-old-computer-59d5ea450507) on how I built it!
 
 ![mrbuffer](https://i.imgur.com/82d4caa.gif)
 
